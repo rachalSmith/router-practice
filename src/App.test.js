@@ -1,8 +1,24 @@
 import { render, screen } from '@testing-library/react';
+import { rest, setupServer } from 'msw/node';
+
 import App from './App';
 
-test('renders learn react link', () => {
+
+const server = setupServer(
+  rest.get('https://pokeapi.co/api/v2/pokemon?limit=20', (req, res, ctx) => {
+    return res(
+      ctx.json({ name: 'bulbasaur'})
+    );
+  })
+)
+
+beforeAll(() => server.listen());
+
+afterAll(() => server.close());
+
+test('fetches pokemon name', async () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+
+  const name = await screen.getByText(/bulbasaur/i);
+  expect(name).toBeInTheDocument();
 });

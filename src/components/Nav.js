@@ -4,7 +4,7 @@ import { Container, Menu } from "semantic-ui-react";
 function Nav() {
     return (
       <>
-        <Menu fixed='top' inverted size='huge'>
+        <Menu fixed='top' inverted color='grey' size='huge'>
             <Container>
                 <Menu.Item as={NavLink} exact to='/' name='Home' />
                 <Menu.Menu position='right'>

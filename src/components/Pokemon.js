@@ -1,21 +1,42 @@
-import { Container, Header } from 'semantic-ui-react'
+import { useEffect, useState } from 'react';
+import { Card, Container } from 'semantic-ui-react';
 
-function Pokemon() {
+function Pokemon({ match }) {
+
+
+    const [pokemon, setPokemon] = useState({
+        sprites: {}
+    });
+
+
+    useEffect(() => {
+        fetchPokemon()
+       }, [])
+
+
+      const fetchPokemon = async () => {
+        try {
+          const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${match.params.id}`);
+          const data = await response.json();
+
+          setPokemon(data);
+        }
+        catch(error) {
+          console.log('error', error);
+        }
+      }
+
+
     return (
-      <div className='pokemon-page'>
-          <Container fluid textAlign='center'>
-                <Header as='h2'>Im the pokemon page</Header>
-                <p>
-                    Domestic dogs inherited complex behaviors, such as bite inhibition, from
-                    their wolf ancestors, which would have been pack hunters with complex
-                    body language. These sophisticated forms of social cognition and
-                    communication may account for their trainability, playfulness, and
-                    ability to fit into human households and social situations, and these
-                    attributes have given dogs a relationship with humans that has enabled
-                    them to become one of the most successful species on the planet today.
-                </p>
+        <div>
+            <Container style={{ marginTop: '20vh' }}>
+                <Card centered
+                    image={pokemon.sprites.front_default}
+                    header={pokemon.name}
+                />
             </Container>
-      </div>
+        </div>
+
     );
   }
 
